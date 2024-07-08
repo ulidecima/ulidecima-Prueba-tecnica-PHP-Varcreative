@@ -1,0 +1,7 @@
+{
+    "name": "abm-usuarios",
+    "description": "Prueba tecnica para Varcreative",
+    "require": {
+        "php": ">=7.0"
+    }
+}
