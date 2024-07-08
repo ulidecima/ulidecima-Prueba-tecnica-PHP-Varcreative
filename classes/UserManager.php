@@ -10,9 +10,10 @@ class UserManager {
         $this -> user = new User($dataBase);
     }
 
-    public function createUser($name, $email) {
+    public function createUser($name, $email, $password) {
         $this -> user -> name = $name;
         $this -> user -> email = $email;
+        $this -> user -> password = $password;
 
         return $this -> user -> create();
     }
@@ -21,7 +22,7 @@ class UserManager {
         return $this -> user -> readAll();
     }
 
-    public function getUser($id) {
+    public function getUserById($id) {
         $this -> user -> id = $id;
         $this -> user -> readOne();
 
@@ -42,5 +43,14 @@ class UserManager {
 
         return $this -> user -> delete();
     }
+
+    public function authenticateUser($email, $password) {
+        return $this -> user -> authenticate($email, $password);
+    }
+
+    public function getUser() {
+        return $this -> user;
+    }
+
 }
 ?>

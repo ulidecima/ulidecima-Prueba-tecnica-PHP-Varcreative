@@ -1,4 +1,4 @@
--- abmusuarios.sql
+-- abmusuarios-setup.sql
 
 -- Crea la base de datos
 CREATE DATABASE IF NOT EXISTS abmusuarios;

@@ -10,12 +10,22 @@ $userManager = new UserManager($dataBaseConnection);
 if ($_POST) {
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    if ($userManager -> createUser($name, $email)) {
+    if ($userManager -> createUser($name, $email, $password)) {
         echo "<div>Usuario creado exitosamente</div>";
     } else {
         echo "<div>Error al crear el usuario</div>";
     }
+}
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
 }
 
 include_once '../templates/header.php';
@@ -27,6 +37,8 @@ include_once '../templates/header.php';
     <input type="text" id="name" name="name" required><br>
     <label for="email">Email:</label><br>
     <input type="email" id="email" name="email" required><br><br>
+    <label for="password">Contraseña:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
     <input type="submit" value="Crear">
 </form>
 

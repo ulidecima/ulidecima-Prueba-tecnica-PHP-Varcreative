@@ -6,6 +6,7 @@ class User {
     public $id;
     public $name;
     public $email;
+    public $password;
 
     public function __construct($dataBase) {
         $this -> connection = $dataBase;
@@ -13,14 +14,16 @@ class User {
 
     public function create() {
         $query = "INSERT INTO " . $this -> tableName .
-        " SET name=:name, email=:email";
+        " SET name=:name, email=:email, password=:password";
         $stmt = $this -> connection -> prepare($query);
 
         $this -> name = htmlspecialchars(strip_tags($this -> name));
         $this -> email = htmlspecialchars(strip_tags($this -> email));
+        $this -> password = password_hash(htmlspecialchars(strip_tags($this -> password)), PASSWORD_BCRYPT);
 
-        $stmt -> bindParam(":name", $this -> name);
-        $stmt -> bindParam(":email", $this -> email);
+        $stmt -> bindParam(':name', $this -> name);
+        $stmt -> bindParam(':email', $this -> email);
+        $stmt -> bindParam(':password', $this -> password);
 
         if ($stmt -> execute()) {
             return true;
@@ -82,6 +85,39 @@ class User {
         }
 
         return false;
+    }
+
+    public function authenticate($email, $password) {
+        $query = "SELECT id, name, email, password FROM " . 
+        $this -> tableName . " WHERE email=:email LIMIT 0,1";
+        $stmt = $this -> connection -> prepare($query);
+
+        $stmt -> bindParam(':email', $email);
+        $stmt -> execute();
+
+        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+        if ($row && password_verify($password, $row['password'])) {
+            $this -> id = $row['id'];
+            $this -> name = $row['name'];
+            $this -> email = $row['email'];
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getId() {
+        return $this -> id;
+    }
+
+    public function getName() {
+        return $this -> name;
+    }
+
+    public function getEmail() {
+        return $this -> email;
     }
 }
 ?>

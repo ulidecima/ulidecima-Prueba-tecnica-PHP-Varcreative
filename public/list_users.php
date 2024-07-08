@@ -9,6 +9,15 @@ $userManager = new UserManager($dataBaseConnection);
 $stmt = $userManager -> listUsers();
 $numRows = $stmt -> rowCount();
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 include_once '../templates/header.php';
 ?>
 
