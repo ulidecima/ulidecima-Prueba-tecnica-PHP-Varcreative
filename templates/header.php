@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+    <script>
+        function showAlert(message) {
+            alert(message);
+        }
+    </script>
     <head>
         <title>ABM Usuarios</title>
     </head>

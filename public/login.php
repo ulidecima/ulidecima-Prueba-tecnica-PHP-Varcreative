@@ -11,12 +11,11 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+include_once '../templates/header.php';
+
 if ($_POST) {
     $email = $_POST['email'];
     $password = $_POST['password'];
-
-    echo "email recibido: " . $email . "<br>";
-    echo "contraseña recibida: " . $password . "<br>";
 
     if ($userManager -> authenticateUser($email, $password)) {
         $user = $userManager -> getUser();
@@ -24,12 +23,11 @@ if ($_POST) {
         $_SESSION['user_name'] = $user -> getName();
         $_SESSION['user_email'] = $user -> getEmail();
         header("Location: index.php");
+        exit();
     } else {
-        echo "<div>Correo electronico o contraseña incorrectos.</div>";
+        echo "<script>showAlert('Correo electronico o contraseña incorrectos.');</script>";
     }
 }
-
-include_once '../templates/header.php';
 ?>
 
 <h2>Login</h2>

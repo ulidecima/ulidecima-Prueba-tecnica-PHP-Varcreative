@@ -2,23 +2,6 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
-$dataBase = new Database();
-$dataBaseConnection = $dataBase -> getConnection();
-
-$userManager = new UserManager($dataBaseConnection);
-
-if ($_POST) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    if ($userManager -> createUser($name, $email, $password)) {
-        echo "<div>Usuario creado exitosamente</div>";
-    } else {
-        echo "<div>Error al crear el usuario</div>";
-    }
-}
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -29,6 +12,29 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include_once '../templates/header.php';
+
+$dataBase = new Database();
+$dataBaseConnection = $dataBase -> getConnection();
+
+$userManager = new UserManager($dataBaseConnection);
+
+if ($_POST) {
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+    if ($userManager -> createUser($name, $email, $password)) {
+        echo "
+            <script>
+                showAlert('Usuario creado correctamente');
+                window.location.href = 'list_users.php';
+            </script>
+        ";
+        exit();
+    } else {
+        echo "<script>showAlert('Error al crear el usuario');</script>";
+    }
+}
 ?>
 
 <h2>Crear Usuario</h2>

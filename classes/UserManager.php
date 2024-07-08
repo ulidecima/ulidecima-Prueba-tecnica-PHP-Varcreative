@@ -35,7 +35,11 @@ class UserManager {
         $this -> user -> name = $name;
         $this -> user -> email = $email;
 
-        return $this -> user -> update();
+        if ($this -> user -> update()) {
+            return true;
+        }
+
+        return false;
     }
 
     public function deleteUser($id) {
@@ -51,6 +55,5 @@ class UserManager {
     public function getUser() {
         return $this -> user;
     }
-
 }
 ?>

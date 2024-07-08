@@ -2,12 +2,7 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
-$dataBase = new Database();
-$dataBaseConnection = $dataBase -> getConnection();
-
-$userManager = new UserManager($dataBaseConnection);
-
-$id = $_GET['id'];
+include_once '../templates/header.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -18,11 +13,28 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if ($userManager -> deleteUser($id)) {
-    echo "<div>Usuario eliminado correctamente</div>";
-} else {
-    echo "<div>Error al eliminar el usuario</div>";
+$dataBase = new Database();
+$dataBaseConnection = $dataBase -> getConnection();
+
+$userManager = new UserManager($dataBaseConnection);
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if ($id === false) {
+    echo "<script>showAlert('El ID del usuario no es valido.');</script>"; 
+    echo "<script>window.location.href = 'list_users.php';</script>";
+    exit();
 }
 
-echo '<a href="list_users.php">Volver a la lista de usuarios</a>';
+if ($userManager -> deleteUser($id)) {
+    echo "
+        <script>
+        showAlert('Usuario eliminado correctamente');
+        window.location.href = 'list_users.php';
+        </script>
+    ";
+    exit();
+} else {
+    echo "<script>showAlert('Error al eliminar el usuario');</script>";
+}
+
 ?>

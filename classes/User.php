@@ -33,7 +33,7 @@ class User {
     }
 
     public function readAll() {
-        $query = "SELECT id, name, email FROM " . $this -> tableName/* . " WHERE id = ? LIMIT 0,1"*/;
+        $query = "SELECT id, name, email FROM " . $this -> tableName;
         $stmt = $this -> connection -> prepare($query);
 
         $stmt -> execute();

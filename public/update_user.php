@@ -2,28 +2,33 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
+include_once '../templates/header.php';
+
 $dataBase = new Database();
 $dataBaseConnection = $dataBase -> getConnection();
 
 $userManager = new UserManager($dataBaseConnection);
 
 if ($_POST) {
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
     if ($userManager -> updateUser($id, $name, $email)) {
-        echo "<div>Usuario actualizado correctamente</div>";
+        echo "
+            <script>
+                showAlert('Usuario actualizado correctamente');
+                window.location.href = 'list_users.php';
+            </script>
+        ";
+        exit();
     } else {
-        echo "<div>Error al actualizar el usuario</div>";
+        echo "<script>showAlert('Error al actualizar el usuario');</script>";
     }
 } else {
-    $user = new stdClass();
-    $id = $_GET['id'];
-    $user = $userManager -> getUser($id);
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $user = $userManager -> getUserById($id);
 }
-
-include_once '../templates/header.php';
 ?>
 
 <h2>Actualizar Usuario</h2>

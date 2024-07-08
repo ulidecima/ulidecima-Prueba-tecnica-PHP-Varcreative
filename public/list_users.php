@@ -2,13 +2,6 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
-$dataBase = new Database();
-$dataBaseConnection = $dataBase -> getConnection();
-
-$userManager = new UserManager($dataBaseConnection);
-$stmt = $userManager -> listUsers();
-$numRows = $stmt -> rowCount();
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,6 +12,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include_once '../templates/header.php';
+
+$dataBase = new Database();
+$dataBaseConnection = $dataBase -> getConnection();
+
+$userManager = new UserManager($dataBaseConnection);
+$stmt = $userManager -> listUsers();
+$numRows = $stmt -> rowCount();
 ?>
 
 <h2>Lista de Usuarios</h2>
@@ -33,8 +33,10 @@ if ($numRows > 0) {
     echo "<th>Acciones</th>";
     echo "</tr>";
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        extract($row);
+    while ($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+        $id = htmlspecialchars($row['id']);
+        $name = htmlspecialchars($row['name']);
+        $email = htmlspecialchars($row['email']);
 
         echo "<tr>";
         echo "<td>{$id}</td>";

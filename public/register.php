@@ -2,24 +2,24 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
+include_once '../templates/header.php';
+
 $database = new Database();
 $databaseConnection = $database -> getConnection();
 
 $userManager = new UserManager($databaseConnection);
 
 if ($_POST) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
     if($userManager -> createUser($name, $email, $password)) {
-        echo "<div>Usuario registrado correctamente. <a href='login.php'>Iniciar sesion</a></div>";
+        echo "<script>showAlert('Usuario registrado correctamente');</script>";
     } else {
-        echo "<div>Error al registrar el usuario.</div>";
+        echo "<script>showAlert('Error al registrar el usuario');</script>";
     }
 }
-
-include_once '../templates/header.php';
 ?>
 
 <h2>Registro</h2>
