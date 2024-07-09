@@ -16,6 +16,7 @@ if ($_POST) {
 
     if($userManager -> createUser($name, $email, $password)) {
         echo "<script>showAlert('Usuario registrado correctamente');</script>";
+        header("Location: login.php");
     } else {
         echo "<script>showAlert('Error al registrar el usuario');</script>";
     }

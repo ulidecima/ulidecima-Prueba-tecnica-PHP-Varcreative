@@ -3,10 +3,10 @@ class User {
     private $connection;
     private $tableName = "users";
 
-    public $id;
-    public $name;
-    public $email;
-    public $password;
+    private $id;
+    private $name;
+    private $email;
+    private $password;
 
     public function __construct($dataBase) {
         $this -> connection = $dataBase;
@@ -14,7 +14,7 @@ class User {
 
     public function create() {
         // Verifica que el mail ingresado no exista en la base de datos
-        if (!$this -> isEmailUnique()) {
+        if ($this -> emailExists()) {
             return false;
         }
 
@@ -61,26 +61,21 @@ class User {
     }
 
     public function update() {
-        // Verifica que el mail ingresado no exista en la base de datos
-        if(!$this -> isEmailUnique()) {
-            return false;
-        }
-
         $query = "UPDATE " . $this -> tableName . " SET name=:name, email=:email WHERE id=:id";
         $stmt = $this -> connection -> prepare($query);
 
-        $this -> name = htmlspecialchars(strip_tags($this -> name));
-        $this -> email = htmlspecialchars(strip_tags($this -> email));
         $this -> id = htmlspecialchars(strip_tags($this -> id));
 
+        $this -> name = htmlspecialchars(strip_tags($this -> name));
+        $this -> email = htmlspecialchars(strip_tags($this -> email));
+
+        $stmt -> bindParam(':id', $this -> id);
         $stmt -> bindParam(':name', $this -> name);
         $stmt -> bindParam(':email', $this -> email);
-        $stmt -> bindParam(':id', $this -> id);
 
         if ($stmt -> execute()) {
             return true;
         }
-        
         return false;
     }
 
@@ -95,7 +90,6 @@ class User {
         if ($stmt -> execute()) {
             return true;
         }
-
         return false;
     }
 
@@ -128,28 +122,48 @@ class User {
     }
 
     /**
-     * isEmailUnique: verifica si el mail ingresado actualmente existe en la base de datos
+     * emailExists: verifica si el mail evaluado actualmente existe en la base de datos
      * @return bool
      */
-    private function isEmailUnique() {
-        $query = "SELECR id FROM " . $this -> tableName . " WHERE email=:email LIMIT 1";
+    private function emailExists() {
+        $query = "SELECT id FROM " . $this -> tableName . " WHERE email=:email LIMIT 1";
         $stmt = $this -> connection -> prepare($query);
         $stmt -> bindParam(':email', $this -> email);
         $stmt -> execute();
 
-        return $stmt -> rowCount() === 0;
+        return $stmt -> rowCount() > 0;
     }
 
     public function getId() {
         return $this -> id;
     }
 
+    public function setId($id) {
+        $this -> id = $id;
+    }
+
     public function getName() {
         return $this -> name;
     }
 
+    public function setName($name) {
+        $this -> name = $name;
+    }
+
     public function getEmail() {
         return $this -> email;
+    }
+
+    public function setEmail($email) {
+        $this -> email = $email;
+    }
+
+    public function getPassword() {
+        return $this -> password;
+    }
+
+    public function setPassword($password) {
+        $this -> password = $password;
     }
 }
 ?>

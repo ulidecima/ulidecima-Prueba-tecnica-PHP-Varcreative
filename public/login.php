@@ -14,8 +14,8 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once '../templates/header.php';
 
 if ($_POST) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
     if ($userManager -> authenticateUser($email, $password)) {
         $user = $userManager -> getUser();

@@ -53,7 +53,11 @@ if ($numRows > 0) {
 
     echo "</table>";
 } else {
-    echo "<div>No se encontraron usuarios.</div>";
+    echo "
+            <div class='container center'>
+                <p>No se encontraron usuarios.</p>
+            </div>
+        ";
 }
 echo "</div>";
 include_once '../templates/footer.php';

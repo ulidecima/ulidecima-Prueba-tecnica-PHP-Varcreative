@@ -11,9 +11,9 @@ class UserManager {
     }
 
     public function createUser($name, $email, $password) {
-        $this -> user -> name = $name;
-        $this -> user -> email = $email;
-        $this -> user -> password = $password;
+        $this -> user -> setName($name);
+        $this -> user -> setEmail($email);
+        $this -> user -> setPassword($password);
 
         return $this -> user -> create();
     }
@@ -23,16 +23,16 @@ class UserManager {
     }
 
     public function getUserById($id) {
-        $this -> user -> id = $id;
+        $this -> user -> setId($id);
         $this -> user -> readOne();
 
         return $this -> user;
     }
     
     public function updateUser($id, $name, $email) {
-        $this -> user -> id = $id;
-        $this -> user -> name = $name;
-        $this -> user -> email = $email;
+        $this -> user -> setId($id);
+        $this -> user -> setName($name);
+        $this -> user -> setEmail($email);
 
         if ($this -> user -> update()) {
             return true;
@@ -42,7 +42,7 @@ class UserManager {
     }
 
     public function deleteUser($id) {
-        $this -> user -> id = $id;
+        $this -> user -> setId($id);
 
         return $this -> user -> delete();
     }

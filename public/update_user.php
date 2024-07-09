@@ -20,7 +20,7 @@ $dataBaseConnection = $dataBase -> getConnection();
 $userManager = new UserManager($dataBaseConnection);
 
 if ($_POST) {
-    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
@@ -38,21 +38,30 @@ if ($_POST) {
     }
 } else {
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-    $user = $userManager -> getUserById($id);
+    if ($id) {
+        $user = $userManager -> getUserById($id);
+        if (!$user) {
+            echo "<script>showAlert('Usuario no encontrado');</script>";
+            exit();
+        }
+    } else {
+        echo "<script>showAlert('ID de usuario invalido');</script>";
+        exit();
+    }
 }
 ?>
 
 <h2>Actualizar Usuario</h2>
 <div class="container left-align">
     <form action="update_user.php" method="post">
-        <input type="hidden" name="id" value="<?php echo $user -> id ?? ''; ?>">
+        <input type="hidden" name="id" value="<?php echo $user -> getId(); ?>">
         <div class="input-field">
             <label for="name">Nombre:</label><br>
-            <input type="text" id="name" name="name" value="<?php echo $user -> name ?? ''; ?>" required><br>
+            <input type="text" id="name" name="name" value="<?php echo $user -> getName(); ?>" required><br>
         </div>
         <div class="input-field">
             <label for="email">Email:</label><br>
-            <input type="email" id="email" name="email" value="<?php echo $user -> email ?? ''; ?>" required><br><br>
+            <input type="email" id="email" name="email" value="<?php echo $user -> getEmail(); ?>" required><br><br>
         </div>
         <div class="input-field">
             <input type="submit" class="btn waves-effect waves-light" value="Actualizar">
