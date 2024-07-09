@@ -2,10 +2,12 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
+// Verifica si se no se inicio sesion. La inicia se es necesario
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Si no hay un usuario logeado, lo redirige al login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -18,12 +20,15 @@ $dataBaseConnection = $dataBase -> getConnection();
 
 $userManager = new UserManager($dataBaseConnection);
 
+// Verifica si el formulario fue enviado
 if ($_POST) {
+    // Se filtran y sanitizan los datos del formulario
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
     if ($userManager -> createUser($name, $email, $password)) {
+        // Si el usuario se creo exitosamente, muestra una alerta y se redirige a la lista de usuarios
         echo "
             <script>
                 showAlert('Usuario creado correctamente');

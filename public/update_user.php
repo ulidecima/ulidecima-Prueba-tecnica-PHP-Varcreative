@@ -2,6 +2,16 @@
 include_once '../config/database.php';
 include_once '../classes/UserManager.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Si no hay un usuario logeado, redirige al login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 include_once '../templates/header.php';
 
 $dataBase = new Database();

@@ -5,7 +5,7 @@ class Database {
     private $databaseName = "abmusuarios";
     private $username = "root";
     private $password = "";
-    public $connection;
+    public $connection; 
 
     public function getConnection() {
         $this -> connection = null;

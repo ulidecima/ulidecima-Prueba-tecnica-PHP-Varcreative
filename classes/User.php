@@ -13,6 +13,7 @@ class User {
     }
 
     public function create() {
+        // Verifica que el mail ingresado no exista en la base de datos
         if (!$this -> isEmailUnique()) {
             return false;
         }
@@ -21,6 +22,7 @@ class User {
         " SET name=:name, email=:email, password=:password";
         $stmt = $this -> connection -> prepare($query);
 
+        // Se sanitizan los datos de entrada
         $this -> name = htmlspecialchars(strip_tags($this -> name));
         $this -> email = htmlspecialchars(strip_tags($this -> email));
         $this -> password = password_hash(htmlspecialchars(strip_tags($this -> password)), PASSWORD_BCRYPT);
@@ -51,13 +53,15 @@ class User {
 
         $stmt -> bindParam(':id', $this -> id);
         $stmt -> execute();
-
+        
+        // se obtiene la primera fila que devuelve la consulta y se indica que la fila obtenida debe ser un array asociativo
         $row = $stmt -> fetch(PDO::FETCH_ASSOC);
         $this -> name = $row['name'];
         $this -> email = $row['email'];
     }
 
     public function update() {
+        // Verifica que el mail ingresado no exista en la base de datos
         if(!$this -> isEmailUnique()) {
             return false;
         }
@@ -95,6 +99,12 @@ class User {
         return false;
     }
 
+    /**
+     * authenticate($email, $password) se encarga de autenticar al usuario comprobando su email y contraseña
+     * @param mixed $email
+     * @param mixed $password
+     * @return bool
+     */
     public function authenticate($email, $password) {
         $query = "SELECT id, name, email, password FROM " . 
         $this -> tableName . " WHERE email=:email LIMIT 0,1";
@@ -105,6 +115,7 @@ class User {
 
         $row = $stmt -> fetch(PDO::FETCH_ASSOC);
 
+        // se usa password_verify para verificar la contraseña sin hash contra la contraseña con hash
         if ($row && password_verify($password, $row['password'])) {
             $this -> id = $row['id'];
             $this -> name = $row['name'];
@@ -116,6 +127,10 @@ class User {
         return false;
     }
 
+    /**
+     * isEmailUnique: verifica si el mail ingresado actualmente existe en la base de datos
+     * @return bool
+     */
     private function isEmailUnique() {
         $query = "SELECR id FROM " . $this -> tableName . " WHERE email=:email LIMIT 1";
         $stmt = $this -> connection -> prepare($query);
