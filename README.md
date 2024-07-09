@@ -23,21 +23,37 @@ Eliminar Usuario: Opción para eliminar un usuario de la lista.
 Te sugerimos organizar tu proyecto de la siguiente manera:
 
 /abm-usuarios
+
 |-- /config
+
 |   |-- database.php
+
 |-- /classes
+
 |   |-- User.php
+
 |   |-- UserManager.php
+
 |-- /public
+
 |   |-- index.php
+
 |   |-- create_user.php
+
 |   |-- update_user.php
+
 |   |-- delete_user.php
+
 |   |-- list_users.php
+
 |-- /templates
+
 |   |-- header.php
+
 |   |-- footer.php
+
 |-- .htaccess
+
 |-- composer.json
 
 ## Detalles Técnicos
