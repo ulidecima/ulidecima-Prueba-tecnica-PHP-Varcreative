@@ -13,6 +13,10 @@ class User {
     }
 
     public function create() {
+        if (!$this -> isEmailUnique()) {
+            return false;
+        }
+
         $query = "INSERT INTO " . $this -> tableName .
         " SET name=:name, email=:email, password=:password";
         $stmt = $this -> connection -> prepare($query);
@@ -54,6 +58,10 @@ class User {
     }
 
     public function update() {
+        if(!$this -> isEmailUnique()) {
+            return false;
+        }
+
         $query = "UPDATE " . $this -> tableName . " SET name=:name, email=:email WHERE id=:id";
         $stmt = $this -> connection -> prepare($query);
 
@@ -106,6 +114,15 @@ class User {
         }
 
         return false;
+    }
+
+    private function isEmailUnique() {
+        $query = "SELECR id FROM " . $this -> tableName . " WHERE email=:email LIMIT 1";
+        $stmt = $this -> connection -> prepare($query);
+        $stmt -> bindParam(':email', $this -> email);
+        $stmt -> execute();
+
+        return $stmt -> rowCount() === 0;
     }
 
     public function getId() {

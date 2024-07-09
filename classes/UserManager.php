@@ -29,7 +29,6 @@ class UserManager {
         return $this -> user;
     }
     
-
     public function updateUser($id, $name, $email) {
         $this -> user -> id = $id;
         $this -> user -> name = $name;
