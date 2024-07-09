@@ -132,7 +132,7 @@ class User {
      * @return bool
      */
     private function isEmailUnique() {
-        $query = "SELECR id FROM " . $this -> tableName . " WHERE email=:email LIMIT 1";
+        $query = "SELECT id FROM " . $this -> tableName . " WHERE email=:email LIMIT 1";
         $stmt = $this -> connection -> prepare($query);
         $stmt -> bindParam(':email', $this -> email);
         $stmt -> execute();
