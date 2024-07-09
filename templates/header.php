@@ -6,29 +6,43 @@
         }
     </script>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>ABM Usuarios</title>
     </head>
     <body>
         <header>
-            <h1>ABM Usuarios</h1>
             <nav>
-                <?php
-                if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
-                if (isset($_SESSION['user_id'])) {
-                    echo '<a href="index.php">Inicio</a>';
-                    echo ' | ';
-                    echo '<a href="create_user.php">Crear Usuario</a>';
-                    echo ' | ';
-                    echo '<a href="list_users.php">Listar Usuarios</a>';
-                    echo ' | ';
-                    echo '<a href="logout.php">Logout (' . $_SESSION['user_name'] .')</a>';
-                } else {
-                    echo '<a href="login.php">Login</a>';
-                    echo ' | ';
-                    echo '<a href="register.php">Registrarse</a>';
-                }
-                ?>
+                <div class="nav-wrapper">
+                    <?php
+                    echo '
+                        <a href="#!" class="brand-logo left">ABM Usuarios</a>
+                    ';
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                    }
+                    if (isset($_SESSION['user_id'])) {
+                        echo '
+                            <ul id="nav-mobile" class="right">
+                                <li><a href="index.php">Inicio</a></li>
+                                <li><a href="create_user.php">Crear Usuario</a></li>
+                                <li><a href="list_users.php">Listar Usuarios</a></li>
+                                <li><a href="logout.php">Logout (' . $_SESSION['user_name'] .')</a></li>
+                            </ul>
+                        ';
+                    } else {
+                        echo '
+                            <ul id="nav-mobile" class="right">
+                                <li><a href="login.php">Login</a></li>
+                                <li><a href="register.php">Registrarse</a></li>
+                            </ul>
+                        ';
+                    }
+                    ?>
+                </div>
             </nav>
         </header>
+        <div class="container center">

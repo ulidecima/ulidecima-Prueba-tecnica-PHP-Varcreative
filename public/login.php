@@ -31,13 +31,21 @@ if ($_POST) {
 ?>
 
 <h2>Login</h2>
-<form action="login.php" method="post">
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" required><br>
-    <label for="password">Contraseña</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-    <input type="submit" value="Login">
-</form>
+<div class="container left-align">
+    <form action="login.php" method="post">
+        <div class="input-field">
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br>
+        </div>
+        <div class="input-field">
+            <label for="password">Contraseña</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+        </div>
+        <div class="input-field">
+            <input type="submit" class="btn waves-effect waves-light" value="Login">
+        </div>
+    </form>
+</div>
 
 <?php
 include_once '../templates/footer.php';

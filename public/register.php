@@ -23,15 +23,25 @@ if ($_POST) {
 ?>
 
 <h2>Registro</h2>
-<form action="register.php" method="post">
-    <label for="name">Nombre:</label><br>
-    <input type="text" id="name" name="name" required><br>
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" required><br>
-    <label for="password">Contraseña:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-    <input type="submit" value="Registrarse">
-</form>
+<div class="container left-align">
+    <form action="register.php" method="post">
+        <div class="input-field">
+            <label for="name">Nombre:</label><br>
+            <input type="text" id="name" name="name" required><br>
+        </div>
+        <div class="input-field">
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br>
+        </div>
+        <div class="input-field">
+            <label for="password">Contraseña:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+        </div>
+        <div class="input-field">
+        <input type="submit" class="btn waves-effect waves-light" value="Registrarse">
+        </div>
+    </form>
+</div>
 
 <?php
 include_once '../templates/footer.php';

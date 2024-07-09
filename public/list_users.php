@@ -22,10 +22,11 @@ $numRows = $stmt -> rowCount();
 ?>
 
 <h2>Lista de Usuarios</h2>
+<div class="container left-align">
 <?php
 
 if ($numRows > 0) {
-    echo "<table>";
+    echo '<table class="highlight">';
     echo "<tr>";
     echo "<th>ID</th>";
     echo "<th>Nombre</th>";
@@ -54,6 +55,6 @@ if ($numRows > 0) {
 } else {
     echo "<div>No se encontraron usuarios.</div>";
 }
-
+echo "</div>";
 include_once '../templates/footer.php';
 ?>
